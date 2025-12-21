@@ -7,7 +7,7 @@ This example demonstrates how to quickly get started with the iNFINITE AI 2025 d
 ### 1. Clone and Setup
 
 ```bash
-git clone https://github.com/NaTo1000/iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip.git
+git clone https://github.com/NaTo1000/iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip
 cd iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip
 
 # Create necessary directories
@@ -33,7 +33,7 @@ curl -X POST http://localhost:8080/predict \
   -d '{"input": "test data"}'
 
 # Check metrics
-curl http://localhost:9090/metrics
+curl http://localhost:8080/metrics
 ```
 
 ### 3. Stop Services

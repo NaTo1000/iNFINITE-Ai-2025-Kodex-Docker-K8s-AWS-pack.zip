@@ -48,11 +48,8 @@ ENV AI_MODEL_PATH=/models \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Expose application port
+# Expose application port (includes /metrics endpoint)
 EXPOSE 8080
-
-# Expose metrics port
-EXPOSE 9090
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \

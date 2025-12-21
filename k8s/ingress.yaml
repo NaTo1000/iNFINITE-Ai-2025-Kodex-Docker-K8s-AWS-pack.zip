@@ -28,10 +28,10 @@ spec:
   - host: metrics.infinite-ai.example.com
     http:
       paths:
-      - path: /
+      - path: /metrics
         pathType: Prefix
         backend:
           service:
             name: infinite-ai-service-internal
             port:
-              number: 9090
+              number: 8080

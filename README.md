@@ -62,7 +62,7 @@ A comprehensive cloud-based AI deployment package with enhancements to run in AW
 
 ```bash
 # Clone the repository
-git clone https://github.com/NaTo1000/iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip.git
+git clone https://github.com/NaTo1000/iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip
 cd iNFINITE-Ai-2025-Kodex-Docker-K8s-AWS-pack.zip
 
 # Build the Docker image
@@ -174,7 +174,7 @@ The application supports the following environment variables:
 | `MAX_WORKERS` | Maximum worker threads | `4` | No |
 | `ENABLE_GPU` | Enable GPU support | `false` | No |
 | `S3_BUCKET` | S3 bucket for model storage | - | Yes |
-| `METRICS_PORT` | Port for metrics endpoint | `9090` | No |
+
 
 ### Kubernetes Configuration
 
@@ -221,7 +221,7 @@ The deployment automatically creates CloudWatch log groups and metrics:
 
 ### Prometheus Metrics
 
-Metrics endpoint available at `:9090/metrics`:
+Metrics endpoint available at `/metrics` on port 8080:
 
 - Request latency
 - Throughput

@@ -141,7 +141,10 @@ def main():
     
     # Get port from environment
     port = int(os.getenv('PORT', '8080'))
-    metrics_port = int(os.getenv('METRICS_PORT', '9090'))
+    
+    logger.info(f"Starting server on port {port}")
+    logger.info(f"Health check: http://0.0.0.0:{port}/health")
+    logger.info(f"Metrics: http://0.0.0.0:{port}/metrics")
     
     # Start Flask app
     app.run(

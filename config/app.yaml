@@ -24,7 +24,7 @@ aws:
 # Monitoring settings
 monitoring:
   enabled: true
-  metrics_port: 9090
+  metrics_endpoint: /metrics
   health_check_interval: 30
   log_level: INFO
 

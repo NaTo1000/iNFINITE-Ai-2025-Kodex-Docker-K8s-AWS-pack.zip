@@ -23,7 +23,7 @@ spec:
         version: v1
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
+        prometheus.io/port: "8080"
         prometheus.io/path: "/metrics"
     spec:
       serviceAccountName: infinite-ai-sa
@@ -38,9 +38,6 @@ spec:
         ports:
         - name: http
           containerPort: 8080
-          protocol: TCP
-        - name: metrics
-          containerPort: 9090
           protocol: TCP
         env:
         - name: AI_MODEL_PATH
@@ -63,11 +60,6 @@ spec:
             configMapKeyRef:
               name: infinite-ai-config
               key: MAX_WORKERS
-        - name: METRICS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: infinite-ai-config
-              key: METRICS_PORT
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:

@@ -10,7 +10,6 @@ data:
   LOG_LEVEL: "INFO"
   AWS_REGION: "us-east-1"
   MAX_WORKERS: "4"
-  METRICS_PORT: "9090"
   # Application configuration
   app.config: |
     server:

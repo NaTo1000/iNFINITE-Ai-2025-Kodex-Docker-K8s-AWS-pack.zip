@@ -8,8 +8,7 @@ services:
     image: infinite-ai:latest
     container_name: infinite-ai-app
     ports:
-      - "8080:8080"  # Application port
-      - "9090:9090"  # Metrics port
+      - "8080:8080"  # Application port (includes /metrics endpoint)
     environment:
       - AI_MODEL_PATH=/models
       - AWS_REGION=us-east-1
@@ -17,7 +16,6 @@ services:
       - MAX_WORKERS=4
       - ENABLE_GPU=false
       - S3_BUCKET=infinite-ai-models
-      - METRICS_PORT=9090
     volumes:
       - ./models:/models
       - ./data:/data
