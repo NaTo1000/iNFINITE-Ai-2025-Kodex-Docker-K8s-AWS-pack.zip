@@ -1,0 +1,167 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infinite-ai-deployment
+  namespace: infinite-ai
+  labels:
+    app: infinite-ai-app
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: infinite-ai-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: infinite-ai-app
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: infinite-ai-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: infinite-ai
+        image: infinite-ai:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        env:
+        - name: AI_MODEL_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: infinite-ai-config
+              key: AI_MODEL_PATH
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: infinite-ai-config
+              key: LOG_LEVEL
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: infinite-ai-config
+              key: AWS_REGION
+        - name: MAX_WORKERS
+          valueFrom:
+            configMapKeyRef:
+              name: infinite-ai-config
+              key: MAX_WORKERS
+        - name: METRICS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: infinite-ai-config
+              key: METRICS_PORT
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: infinite-ai-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: infinite-ai-secret
+              key: AWS_SECRET_ACCESS_KEY
+        - name: S3_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: infinite-ai-secret
+              key: S3_BUCKET
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: infinite-ai-secret
+              key: API_KEY
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: models
+          mountPath: /models
+        - name: data
+          mountPath: /data
+        - name: logs
+          mountPath: /logs
+        - name: config
+          mountPath: /app/config/app.config
+          subPath: app.config
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: infinite-ai-models-pvc
+      - name: data
+        emptyDir: {}
+      - name: logs
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: infinite-ai-config
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - infinite-ai-app
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: infinite-ai-sa
+  namespace: infinite-ai
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/infinite-ai-role
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: infinite-ai-models-pvc
+  namespace: infinite-ai
+spec:
+  accessModes:
+  - ReadOnlyMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 100Gi

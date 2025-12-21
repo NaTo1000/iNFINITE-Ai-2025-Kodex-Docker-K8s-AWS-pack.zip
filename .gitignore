@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.*
+secrets/
+
+# Data and models
+data/
+models/
+logs/
+*.log
+
+# Terraform
+aws/terraform/.terraform/
+aws/terraform/*.tfstate
+aws/terraform/*.tfstate.backup
+aws/terraform/.terraform.lock.hcl
+aws/terraform/tfplan
+
+# Testing
+tests/
+*.test
+
+# OS
+Thumbs.db

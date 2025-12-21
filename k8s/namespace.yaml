@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: infinite-ai
+  labels:
+    name: infinite-ai
+    environment: production
+    app: infinite-ai-app
