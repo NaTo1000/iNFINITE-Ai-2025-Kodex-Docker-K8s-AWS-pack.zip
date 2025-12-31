@@ -1,0 +1,36 @@
+# Application Configuration
+# This is a sample configuration file
+
+# Server settings
+server:
+  port: 8080
+  host: 0.0.0.0
+  workers: 4
+
+# AI Model settings
+ai:
+  model_path: /models
+  model_type: transformer
+  batch_size: 32
+  max_length: 512
+  timeout: 30
+
+# AWS settings
+aws:
+  region: us-east-1
+  s3_bucket: infinite-ai-models
+  use_iam_role: true
+
+# Monitoring settings
+monitoring:
+  enabled: true
+  metrics_endpoint: /metrics
+  health_check_interval: 30
+  log_level: INFO
+
+# Performance settings
+performance:
+  cache_enabled: true
+  cache_ttl: 3600
+  max_concurrent_requests: 100
+  request_timeout: 60
